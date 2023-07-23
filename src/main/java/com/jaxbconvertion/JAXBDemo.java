@@ -6,6 +6,8 @@ import com.example.Patient;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import java.io.StringReader;
 import java.io.StringWriter;
 
 public class JAXBDemo {
@@ -22,9 +24,17 @@ public class JAXBDemo {
             patient.setGender(Gender.valueOf("M"));
 
             StringWriter writer = new StringWriter();
-            marshaller.marshal(patient, writer);
 
+            // Serialization
+            marshaller.marshal(patient, writer);
             System.out.println(writer.toString());
+
+
+            // De-Serialization
+            Unmarshaller unmarshaller = context.createUnmarshaller();
+
+            Patient result = (Patient) unmarshaller.unmarshal(new StringReader(writer.toString()));
+            System.out.println(result.getAge());
 
         } catch (JAXBException e) {
             throw new RuntimeException(e);
